@@ -1,0 +1,24 @@
+From: John Howard <jhoward@microsoft.com>
+Date: Tue, 11 Sep 2018 12:42:39 -0700
+Subject: boltdb/bolt is not maintained. Used bbolt
+
+Origin: backport, https://github.com/docker/libkv/commit/21faf8e
+---
+ store/boltdb/boltdb.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/store/boltdb/boltdb.go b/store/boltdb/boltdb.go
+index cdfd74f..d62979c 100644
+--- a/store/boltdb/boltdb.go
++++ b/store/boltdb/boltdb.go
+@@ -10,9 +10,9 @@ import (
+ 	"sync/atomic"
+ 	"time"
+ 
+-	"github.com/boltdb/bolt"
+ 	"github.com/docker/libkv"
+ 	"github.com/docker/libkv/store"
++	bolt "go.etcd.io/bbolt"
+ )
+ 
+ var (
