@@ -1,4 +1,10 @@
 #!/usr/bin/make -f
 
+# avoid requiring consul code
+export DH_GOLANG_EXCLUDES := consul
+
 %:
-	dh $@
+	dh $@ --buildsystem=golang --with=golang
+
+override_dh_auto_test:
+	-dh_auto_test

@@ -1,0 +1,38 @@
+From: Alessandro Boch <aboch@docker.com>
+Date: Tue, 25 Oct 2016 11:16:16 -0700
+Subject: Allow client to set boltdb timeout
+
+Origin: backport, https://github.com/docker/libkv/commit/63d2c8a
+---
+ store/boltdb/boltdb.go | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/store/boltdb/boltdb.go b/store/boltdb/boltdb.go
+index 4026e0a..cdfd74f 100644
+--- a/store/boltdb/boltdb.go
++++ b/store/boltdb/boltdb.go
+@@ -59,6 +59,7 @@ func New(endpoints []string, options *store.Config) (store.Store, error) {
+ 		db          *bolt.DB
+ 		err         error
+ 		boltOptions *bolt.Options
++		timeout     = transientTimeout
+ 	)
+ 
+ 	if len(endpoints) > 1 {
+@@ -82,11 +83,15 @@ func New(endpoints []string, options *store.Config) (store.Store, error) {
+ 		}
+ 	}
+ 
++	if options.ConnectionTimeout != 0 {
++		timeout = options.ConnectionTimeout
++	}
++
+ 	b := &BoltDB{
+ 		client:            db,
+ 		path:              endpoints[0],
+ 		boltBucket:        []byte(options.Bucket),
+-		timeout:           transientTimeout,
++		timeout:           timeout,
+ 		PersistConnection: options.PersistConnection,
+ 	}
+ 
